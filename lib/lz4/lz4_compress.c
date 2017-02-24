@@ -433,11 +433,29 @@ int lz4_compress(const unsigned char *src, size_t src_len,
 
 	*dst_len = out_len;
 
-	return 0;
-exit:
-	return ret;
+	/* external dictionary mode */
+	{
+		int result;
+
+		if ((streamPtr->dictSize < 64 * KB) &&
+			(streamPtr->dictSize < streamPtr->currentOffset)) {
+			result = LZ4_compress_generic(
+				streamPtr, source, dest, inputSize,
+				maxOutputSize, limitedOutput, byU32,
+				usingExtDict, dictSmall, acceleration);
+		} else {
+			result = LZ4_compress_generic(
+				streamPtr, source, dest, inputSize,
+				maxOutputSize, limitedOutput, byU32,
+				usingExtDict, noDictIssue, acceleration);
+		}
+		streamPtr->dictionary = (const BYTE *)source;
+		streamPtr->dictSize = (U32)inputSize;
+		streamPtr->currentOffset += (U32)inputSize;
+		return result;
+	}
 }
-EXPORT_SYMBOL(lz4_compress);
+EXPORT_SYMBOL(LZ4_compress_fast_continue);
 
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("LZ4 compressor");

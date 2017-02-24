@@ -306,37 +306,15 @@ int lz4_decompress(const unsigned char *src, size_t *src_len,
 	int ret = -1;
 	int input_len = 0;
 
-	input_len = lz4_uncompress(src, dest, actual_dest_len);
-	if (input_len < 0)
-		goto exit_0;
-	*src_len = input_len;
-
-	return 0;
-exit_0:
-	return ret;
-}
 #ifndef STATIC
-EXPORT_SYMBOL(lz4_decompress);
-#endif
-
-int lz4_decompress_unknownoutputsize(const unsigned char *src, size_t src_len,
-		unsigned char *dest, size_t *dest_len)
-{
-	int ret = -1;
-	int out_len = 0;
-
-	out_len = lz4_uncompress_unknownoutputsize(src, dest, src_len,
-					*dest_len);
-	if (out_len < 0)
-		goto exit_0;
-	*dest_len = out_len;
-
-	return 0;
-exit_0:
-	return ret;
-}
-#ifndef STATIC
-EXPORT_SYMBOL(lz4_decompress_unknownoutputsize);
+EXPORT_SYMBOL(LZ4_decompress_safe);
+EXPORT_SYMBOL(LZ4_decompress_safe_partial);
+EXPORT_SYMBOL(LZ4_decompress_fast);
+EXPORT_SYMBOL(LZ4_setStreamDecode);
+EXPORT_SYMBOL(LZ4_decompress_safe_continue);
+EXPORT_SYMBOL(LZ4_decompress_fast_continue);
+EXPORT_SYMBOL(LZ4_decompress_safe_usingDict);
+EXPORT_SYMBOL(LZ4_decompress_fast_usingDict);
 
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_DESCRIPTION("LZ4 Decompressor");
