@@ -59,8 +59,12 @@ static int lz4_uncompress(const char *source, char *dest, int osize)
 	BYTE *op = (BYTE *) dest;
 	BYTE * const oend = op + osize;
 	BYTE *cpy;
-	unsigned token;
-	size_t length;
+	BYTE *oexit = op + targetOutputSize;
+	const BYTE * const lowLimit = lowPrefix - dictSize;
+
+	const BYTE * const dictEnd = (const BYTE *)dictStart + dictSize;
+	static const unsigned int dec32table[] = { 0, 1, 2, 1, 4, 4, 4, 4 };
+	static const int dec64table[] = { 0, 0, 0, -1, 0, 1, 2, 3 };
 
 	while (1) {
 
