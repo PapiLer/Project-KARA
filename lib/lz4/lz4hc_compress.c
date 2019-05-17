@@ -285,7 +285,8 @@ static inline int lz4_encodesequence(const u8 **ip, u8 **op, const u8 **anchor,
 		*token = (length << ML_BITS);
 
 	/* Copy Literals */
-	LZ4_BLINDCOPY(*anchor, *op, length);
+	LZ4_wildCopy8(*op, *anchor, (*op) + length);
+	*op += length;
 
 	/* Encode Offset */
 	LZ4_WRITE_LITTLEENDIAN_16(*op, (u16)(*ip - ref));

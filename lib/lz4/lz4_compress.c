@@ -122,15 +122,10 @@ static inline int lz4_compressctx(void *ctx,
 			(length >> 8) > oend))
 			return 0;
 
-		if (length >= (int)RUN_MASK) {
-			int len;
-			*token = (RUN_MASK << ML_BITS);
-			len = length - RUN_MASK;
-			for (; len > 254 ; len -= 255)
-				*op++ = 255;
-			*op++ = (u8)len;
-		} else
-			*token = (length << ML_BITS);
+			/* Copy Literals */
+			LZ4_wildCopy8(op, anchor, op + litLength);
+			op += litLength;
+		}
 
 		/* Copy Literals */
 		LZ4_BLINDCOPY(anchor, op, length);
@@ -327,8 +322,26 @@ static inline int lz4_compress64kctx(void *ctx,
 		} else
 			*token = (length << ML_BITS);
 
-		/* Copy Literals */
-		LZ4_BLINDCOPY(anchor, op, length);
+			token = op++;
+			if (op + ((litLength + 240) / 255)
+				+ litLength > oMaxLit) {
+				/* Not enough space for a last match */
+				op--;
+				goto _last_literals;
+			}
+			if (litLength >= RUN_MASK) {
+				unsigned int len = litLength - RUN_MASK;
+				*token = (RUN_MASK<<ML_BITS);
+				for (; len >= 255; len -= 255)
+					*op++ = 255;
+				*op++ = (BYTE)len;
+			} else
+				*token = (BYTE)(litLength << ML_BITS);
+
+			/* Copy Literals */
+			LZ4_wildCopy8(op, anchor, op + litLength);
+			op += litLength;
+		}
 
 _next_match:
 		/* Encode Offset */
