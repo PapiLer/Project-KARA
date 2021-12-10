@@ -64,7 +64,8 @@
 #include <linux/poll.h>
 #include <linux/debugfs.h>
 #include <linux/rbtree.h>
-#include <linux/sched.h>
+#include <linux/signal.h>
+#include <linux/mm.h>
 #include <linux/seq_file.h>
 #include <linux/uaccess.h>
 #include <linux/pid_namespace.h>
@@ -75,7 +76,7 @@
 #include <linux/task_work.h>
 #include <linux/sizes.h>
 
-#include <uapi/linux/sched/types.h>
+#include <uapi/linux/types.h>
 #include <uapi/linux/android/binder.h>
 
 #include <asm/cacheflush.h>
