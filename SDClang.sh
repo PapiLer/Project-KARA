@@ -60,7 +60,7 @@ PTTG=1
 	if [ $PTTG = 1 ]
 	then
 		# Set Telegram Chat ID
-		CHATID="-1851989071"
+		CHATID="-1001851989071"
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -145,7 +145,7 @@ exports() {
 	export KBUILD_BUILD_USER="PapiLer"
 	export ARCH=arm64
 	export SUBARCH=arm64
-	export token=$5748449722:AAF8DDlYIxcZ4fhyS-Nal7NurbicxNnAZBU
+	export token=5748449722:AAF8DDlYIxcZ4fhyS-Nal7NurbicxNnAZBU
 
 		KBUILD_COMPILER_STRING=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 		PATH=$TC_DIR/bin/:$GCC64_DIR/bin/:$GCC32_DIR/bin/:$PATH
