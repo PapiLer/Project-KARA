@@ -6,7 +6,7 @@ objdir="${kernel_dir}/out"
 anykernel=$HOME/anykernel
 builddir="${kernel_dir}/build"
 ZIMAGE=$kernel_dir/out/arch/arm64/boot/Image.gz-dtb
-kernel_name="Project-Kara-onclite"
+kernel_name="Kara-KSU-onclite"
 zip_name="$kernel_name-$(date +"%d%m%Y-%H%M").zip"
 TC_DIR=$HOME/tc/proton-clang
 export CONFIG_FILE="onclite-perf_defconfig"
@@ -61,7 +61,7 @@ completion()
 	COMPILED_DTBO=arch/arm64/boot/dtbo.img
 	if [[ -f ${COMPILED_IMAGE} && ${COMPILED_DTBO} ]]; then
 
-	git clone -q https://github.com/Risti699/AnyKernel3 $anykernel
+	git clone -q https://github.com/Risti699/AnyKernel3 -b tmp $anykernel
 
 		mv -f $ZIMAGE ${COMPILED_DTBO} $anykernel
 
